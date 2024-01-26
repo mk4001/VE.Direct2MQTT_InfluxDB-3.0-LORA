@@ -21,6 +21,8 @@ Unlike versions 1.0 and 2.0 of my related projects, this time I wanted to use Lo
 
 https://lora-alliance.org
 
+https://www.lilygo.cc/products/lora-v1-3
+
 Once the record has been captured on the first TTGO-ESP32 (sender), we need to parse the fields and collect the data we need before sending it to both MQTT and InfluxDB.2
 
 In this new version 2.0 I used the official Victron Energy library "VeDirectFrameHandler" which is able to manage the "Chesum" field very well at the end of each record coming from a Victron device.
