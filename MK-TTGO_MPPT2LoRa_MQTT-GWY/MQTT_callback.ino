@@ -1,3 +1,9 @@
+/*
+  © MK 18 Jan 2024
+  LoRaReceiver MQTT Gateway
+  based on ESP32-TTGO sending packets on 868 MHz
+*/
+
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
   Serial.print(topic);
