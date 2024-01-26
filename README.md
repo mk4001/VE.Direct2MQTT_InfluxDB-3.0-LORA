@@ -17,7 +17,7 @@ Detailed documentation of the fields, their format and content is collected here
 
 https://www.victronenergy.com/upload/documents/VE.Direct-Protocol-3.33.pdf
 
-Unlike versions 1.0 and 2.0 of my related projects, this time I wanted to use LoRa technology as it allows you to send data even several kilometers away (depending on places and obstacles that can influence the quality of data reception, Obviously)
+Unlike versions 1.0 and 2.0 of my related projects, this time I wanted to use LoRa technology (with 2xTTGO ESP32) as it allows you to send data even several kilometers away (depending on places and obstacles that can influence the quality of data reception, Obviously)
 
 https://lora-alliance.org
 
