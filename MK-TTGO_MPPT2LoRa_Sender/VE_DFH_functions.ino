@@ -1,3 +1,9 @@
+/*
+  © MK 18 Jan 2024
+  LoRaSender_Serial_Input
+  based on ESP32-TTGO sending packets on 868 MHz
+*/
+
 void ReadVEData() {
   while (SERIAL_PORT.available()) {
     myve.rxData(SERIAL_PORT.read());
