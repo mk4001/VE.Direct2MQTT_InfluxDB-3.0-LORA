@@ -12,7 +12,7 @@
 /* WiFi parameters and credentials */
 #include <WiFiManager.h>  // https://github.com/tzapu/WiFiManager
 #include <PubSubClient.h>
-const char* mqtt_server = "rpi.fritz.box";
+const char* mqtt_server = "mqtt.aaaaa.org"; /your MQTT broker
 
 WiFiClient espClient;
 PubSubClient client(espClient);
