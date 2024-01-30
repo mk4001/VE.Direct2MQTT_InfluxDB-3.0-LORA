@@ -21,3 +21,7 @@ and finally the name of the BUCKET you intend to use to write the collected data
 [influxDBBucket = "Victron"]
 
 The GATEWAY will be placed in your home and must be connected to your home WiFi by specifying the necessary credentials directly in the sketch.
+
+obviously you can choose to have InfluxDB on Premise, perhaps on a Raspberry PI, why not...
+
+In this case it will be sufficient to replace the Cloud credentials with those of the on-premise version
