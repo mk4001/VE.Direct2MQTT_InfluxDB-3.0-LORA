@@ -25,7 +25,7 @@ VeDirectFrameHandler myve;
 
 const int blueLED = LED_BUILTIN;
 long rec_count = 0;
-String rssi;
+String rssi, packet;
 
 // Schedule TX every this many seconds (might become longer due to duty
 // cycle limitations).
@@ -45,6 +45,9 @@ void setup() {
 
   SERIAL_PORT.begin(19200, SERIAL_8N1, RXD2, TXD2);  // input serial port (VE device)
   SERIAL_PORT.flush();
+
+  pinMode(blueLED, OUTPUT);  // For LED feedback
+
   Serial.println("DEBUG-setup");
 
   Serial.println("LoRa Sender");
@@ -59,9 +62,6 @@ void setup() {
 
   // Very important for LoRa Radio pin configuration!
   LoRa.setPins(LORA_CS, LORA_RST, LORA_IRQ);
-
-  pinMode(blueLED, OUTPUT);  // For LED feedback
-
 
   if (!LoRa.begin(868E6)) {
     Serial.println("Starting LoRa failed!");
@@ -79,12 +79,38 @@ void setup() {
   // TTGO and some modules are connected to RFO_HF, gain 0-14
   // If your receiver RSSI is very weak and little affected by a better antenna, change this!
   LoRa.setTxPower(14, PA_OUTPUT_RFO_PIN);
+  LoRa.enableCrc();
 
   Serial.println("LoRa STARTED");
 }
 
 void loop() {
+
   ReadVEData();
+
   EverySecond();
-  SERIAL_PORT.flush();
+
+  // try to parse packet
+  int packetSize = LoRa.parsePacket();
+
+  if (packetSize) {
+    // received a packet
+
+    Serial.print("Received packet '");
+
+    digitalWrite(blueLED, ON);  // Turn blue LED on
+
+    // read packet
+    packet = "";  // Clear packet
+    while (LoRa.available()) {
+      packet += (char)LoRa.read();  // Assemble new packet
+    }
+
+    digitalWrite(blueLED, OFF);  // Turn blue LED off
+
+    Serial.println(packet);
+
+    PrintData();
+  }
+
 }
