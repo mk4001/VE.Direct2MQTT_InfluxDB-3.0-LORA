@@ -54,6 +54,7 @@ void setup() {
 
   Serial.println("LoRa Receiver & GWY");
 
+  pinMode(blueLED, OUTPUT);  // For LED feedback
 
   //WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wm;
@@ -87,7 +88,6 @@ void setup() {
   // Very important for LoRa Radio pin configuration!
   LoRa.setPins(LORA_CS, LORA_RST, LORA_IRQ);
 
-  pinMode(blueLED, OUTPUT);  // For LED feedback
 
   if (!LoRa.begin(868E6)) {
     Serial.println("Starting LoRa failed!");
@@ -98,6 +98,14 @@ void setup() {
   // The larger the spreading factor the greater the range but slower data rate
   // Send and receive radios need to be set the same
   LoRa.setSpreadingFactor(7);  // ranges from 6-12, default 7 see API docs
+
+  // Change the transmit power of the radio
+  // Default is LoRa.setTxPower(17, PA_OUTPUT_PA_BOOST_PIN);
+  // Most modules have the PA output pin connected to PA_BOOST, gain 2-17
+  // TTGO and some modules are connected to RFO_HF, gain 0-14
+  // If your receiver RSSI is very weak and little affected by a better antenna, change this!
+  LoRa.setTxPower(14, PA_OUTPUT_RFO_PIN);
+  LoRa.enableCrc();
 
 
   // Display Info
@@ -114,6 +122,12 @@ void setup() {
 
   delay(10000);
   Display.clearDisplay();
+
+  digitalWrite(blueLED, ON);  // Turn blue LED on
+  LoRa.beginPacket();
+  LoRa.print("ACK");
+  LoRa.endPacket();
+  digitalWrite(blueLED, OFF);  // Turn blue LED off
 }
 
 void loop() {
@@ -123,8 +137,11 @@ void loop() {
   }
   client.loop();
 
+  static unsigned long prev_millis;
+
   // try to parse packet
   int packetSize = LoRa.parsePacket();
+
   if (packetSize) {
     // received a packet
 
@@ -155,6 +172,19 @@ void loop() {
 
     WlanPower(clientId);
 
+    LoRa.beginPacket();
+    LoRa.print("ACK");
+    LoRa.endPacket();
+    prev_millis = millis();
+
     digitalWrite(blueLED, OFF);  // Turn blue LED off
+  }
+
+  else if (!packetSize && (millis() - prev_millis > 5000)) {
+    LoRa.beginPacket();
+    LoRa.print("ACK - SEND IT AGAIN");
+    LoRa.endPacket();
+    Serial.println("ACK - SEND IT AGAIN");
+    prev_millis = millis();
   }
 }
