@@ -49,7 +49,7 @@ With a little imagination and above all practice, you can also create dashboards
 ![image1](https://github.com/mk4001/VE.Direct2MQTT-2.0/blob/5b6c22a4f9a01b6e5497d393e531245881a66e8c/Screenshot%202024-01-26%20at%2010.20.00.png)
 (Grafana Dashboard file: Victron Energy-1700659129739.json)
 
-Alternatively you can use node red and manipulate the data as you see fit or create an ad hoc dashboard. 
+Alternatively you can use Node RED and manipulate the data as you see fit or create an ad hoc dashboard. 
 
 https://nodered.org
 
