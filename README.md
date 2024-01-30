@@ -1,5 +1,5 @@
 # VE.Direct2MQTT or InfluxDB using LoRa Technology
-Victron Energy VE.Direct UART data output capture via MQTT and/or InfluxDB Cloud based on Lilygo TTGO ESP32-Lora (based on the Arduino platform)
+Victron Energy VE.Direct UART data output capture via MQTT and/or InfluxDB Cloud based on two Lilygo TTGO ESP32-Lora, one for SENDER and the other as GATEWAY (based on the Arduino platform)
 
 ![image1](https://github.com/mk4001/VE.Direct2MQTT_InfluxDB-3.0-LORA/blob/main/Q184-LoRa32V1_5.jpg)
 
