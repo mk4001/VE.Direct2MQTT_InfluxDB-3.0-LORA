@@ -176,12 +176,47 @@ void parseSerialData(String data) {
 
     if (!influxDB.writePoint(point)) {
       Serial.print("InfluxDB write failed: ");
-    Serial.println(influxDB.getLastErrorMessage());
+      String WriteFailError = influxDB.getLastErrorMessage();
+      Serial.println(WriteFailError);
+      Display.clearBuffer();
+      Display.setCursor(0, 30);
+      Display.print("--- Write Failed ---");
+      Display.setCursor(0, 58);
+      Display.print(WriteFailError);
+      Display.sendBuffer();
+
+      delay(3000);
+      Display.clearDisplay();
     }
-    
+
     Serial.print(rec_count);
     Serial.println("]");
-  } else {
+
+#ifdef DEBUG
+    Display.clearBuffer();
+    Display.setCursor(0, 30);
+    Display.print("Record Written");
+    Display.setCursor(0, 58);
+    Display.print("[            ]");
+    Display.setCursor(10, 58);
+    Display.print(rec_count);
+    Display.sendBuffer();
+#endif
+
+    point.clearFields();
+  }
+
+  else {
+    Display.clearBuffer();
+    Display.setCursor(0, 30);
+    Display.print("--- BAD FRAME ---");
+    Display.setCursor(0, 58);
+    Display.print("RSSI " + rssi + " dB");
+    Display.sendBuffer();
+
+    delay(3000);
+    Display.clearDisplay();
+
     Serial.println("-------------BAD FRAME-------------");
   }
 
