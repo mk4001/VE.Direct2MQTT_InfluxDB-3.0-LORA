@@ -172,6 +172,8 @@ void loop() {
 
     WlanPower(clientId);
 
+    delay(2000); // to avoid broadcast overload
+
     LoRa.beginPacket();
     LoRa.print("ACK");
     LoRa.endPacket();
