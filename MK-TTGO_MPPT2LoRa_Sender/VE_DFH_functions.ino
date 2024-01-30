@@ -1,9 +1,3 @@
-/*
-  © MK 18 Jan 2024
-  LoRaSender_Serial_Input
-  based on ESP32-TTGO sending packets on 868 MHz
-*/
-
 void ReadVEData() {
   while (SERIAL_PORT.available()) {
     myve.rxData(SERIAL_PORT.read());
@@ -14,8 +8,8 @@ void ReadVEData() {
 void EverySecond() {
   static unsigned long prev_millis;
 
-  if (millis() - prev_millis > 5000) { //Every 5 secs
-    PrintData();
+  if (millis() - prev_millis > 1000) {  //Every 1 secs
+    Serial.print(".");
     prev_millis = millis();
   }
 }
@@ -35,10 +29,12 @@ void PrintData() {
     digitalWrite(blueLED, OFF);  // Turn blue LED off
   }
 
+  digitalWrite(blueLED, ON);  // Turn blue LED on
   LoRa.endPacket();
+  digitalWrite(blueLED, OFF);  // Turn blue LED off
 
   rssi = LoRa.packetRssi();
-  Serial.println("Sender LoRa Signal Strength (dB):  " + rssi);
+  Serial.println("Sender LoRa Signal Strength (dBm):  " + rssi);
 
   Serial.println();
   Serial.print("[");
