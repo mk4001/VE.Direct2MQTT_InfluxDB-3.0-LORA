@@ -1,6 +1,8 @@
 # VE.Direct2MQTT or InfluxDB using LoRa Technology
 Victron Energy VE.Direct UART data output capture via MQTT and/or InfluxDB Cloud based on Lilygo TTGO ESP32-Lora (based on the Arduino platform)
 
+![image1](https://github.com/mk4001/VE.Direct2MQTT_InfluxDB-3.0-LORA/blob/main/TTGO%20LoRa%20SX1276%20Oled.jpg)
+
 The idea of untying the Victron Energy Smart Solar MPPT 75/15 from the smartphone's BLE APP and being able to bring the data to the cloud on InfluxDB (even on premise is fine anyway) led me to carry out this project.
 
 The VE.Direct interface, on most Victron Energy products, is in fact a UART that transmits at a record speed of one per second at 19200 baud.
