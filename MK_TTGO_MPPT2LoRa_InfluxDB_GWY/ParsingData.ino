@@ -170,10 +170,15 @@ void parseSerialData(String data) {
 
   // InfluxDB Cloud flush on last field received
   if (check == 15) {
-    influxDB.writePoint(point);
     Serial.println();
     rec_count++;
     Serial.print("Write Rec[");
+
+    if (!influxDB.writePoint(point)) {
+      Serial.print("InfluxDB write failed: ");
+    Serial.println(influxDB.getLastErrorMessage());
+    }
+    
     Serial.print(rec_count);
     Serial.println("]");
   } else {
