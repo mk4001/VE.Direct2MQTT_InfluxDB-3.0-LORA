@@ -19,6 +19,14 @@ const char* influxDBToken = "ajajhgajhgajhgajhgajhgajhgajhgajhgajhgajhgajhg";
 const char* influxDBOrg = "876324876234876234876";
 const char* influxDBBucket = "Victron";
 
+/* alternatively an on premise server for example on raspberry pi
+// InfluxDB on Premise Configuration
+const char* influxDBUrl = "http://rpi3bp:8086";
+const char* influxDBToken = "lkasfjleroiuovixclnewrwerkjhlkdshlkjlsksdjflk";
+const char* influxDBOrg = "fsd645dsf984ew";
+const char* influxDBBucket = "Victron";
+*/
+
 // Time zone info
 #define TZ_INFO "UTC2"
 
@@ -50,6 +58,8 @@ void setup() {
   Serial.begin(115200);
 
   Serial.println("LoRa Receiver & GWY");
+
+  pinMode(blueLED, OUTPUT);  // For LED feedback
 
   //WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wm;
@@ -83,8 +93,13 @@ void setup() {
   // Send and receive radios need to be set the same
   LoRa.setSpreadingFactor(7);  // ranges from 6-12, default 7 see API docs
 
-  pinMode(blueLED, OUTPUT);  // For LED feedback
-
+  // Change the transmit power of the radio
+  // Default is LoRa.setTxPower(17, PA_OUTPUT_PA_BOOST_PIN);
+  // Most modules have the PA output pin connected to PA_BOOST, gain 2-17
+  // TTGO and some modules are connected to RFO_HF, gain 0-14
+  // If your receiver RSSI is very weak and little affected by a better antenna, change this!
+  LoRa.setTxPower(14, PA_OUTPUT_RFO_PIN);
+  LoRa.enableCrc();
 
   // Accurate time is necessary for certificate validation and writing in batches
   // We use the NTP servers in your area as provided by: https://www.pool.ntp.org/zone/
@@ -92,7 +107,7 @@ void setup() {
   timeSync(TZ_INFO, "pool.ntp.org", "time.nis.gov");
 
 
-   // Check server connection
+  // Check server connection
   if (influxDB.validateConnection()) {
     Serial.print("Connected to InfluxDB: ");
     Serial.println(influxDB.getServerUrl());
@@ -104,13 +119,22 @@ void setup() {
   point.addTag("device", "mppt_victron");
 
   Serial.println("Program Start");
+
+
+  digitalWrite(blueLED, ON);  // Turn blue LED on
+  LoRa.beginPacket();
+  LoRa.print("ACK");
+  LoRa.endPacket();
+  digitalWrite(blueLED, OFF);  // Turn blue LED off
 }
 
 void loop() {
 
+  static unsigned long prev_millis;
 
   // try to parse packet
   int packetSize = LoRa.parsePacket();
+
   if (packetSize) {
     // received a packet
 
@@ -130,7 +154,18 @@ void loop() {
 
     parseSerialData(packet);
 
-
     digitalWrite(blueLED, OFF);  // Turn blue LED off
+
+    LoRa.beginPacket();
+    LoRa.print("ACK");
+    LoRa.endPacket();
+    prev_millis = millis();
+
+  } else if (!packetSize && (millis() - prev_millis > 5000)) {
+    LoRa.beginPacket();
+    LoRa.print("ACK - SEND IT AGAIN");
+    LoRa.endPacket();
+    Serial.println("ACK - SEND IT AGAIN");
+    prev_millis = millis();
   }
 }
