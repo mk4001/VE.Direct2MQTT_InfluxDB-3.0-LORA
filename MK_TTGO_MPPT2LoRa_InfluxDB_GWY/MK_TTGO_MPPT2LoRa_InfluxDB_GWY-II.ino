@@ -13,20 +13,20 @@
 #include <InfluxDbClient.h>
 #include <InfluxDbCloud.h>
 
-const char* ssid = "WLAN 7490-2.4GHz";
-const char* password = "06431928919070006302";
+const char* ssid = "WLAN SSID NAME";
+const char* password = "WLAN SSID PWD";
 
 // InfluxDB Cloud Configuration
 const char* influxDBUrl = "https://eu-central-1-1.aws.cloud2.influxdata.com";
-const char* influxDBToken = "vlYHoJH6PrcDepvl8MCt886dJhmIrfFwvS8I8M0d5OmAgxTIZEzA0wm1EQMrkkRZ9xpQZsV1nLdEVER0ilWHog==";
-const char* influxDBOrg = "447ab0b6dc55f6f8";
+const char* influxDBToken = "kjadshkjh32786iwefgkbkvu08718327309rgfkh2378t90fig23hohwgvwo==";
+const char* influxDBOrg = "dkasjhkd87a6s868f76";
 const char* influxDBBucket = "Victron";
 
 /*
 // InfluxDB on Premise Configuration
 const char* influxDBUrl = "http://rpi3bp:8086";
-const char* influxDBToken = "kGVg7zzUkhQjoXBgSQ-tDXSVRl4j7XmRt16VVUsu_Imkd7lwjX2TMYycV3Pfa4FUZHR6Pmh46db2qXwwhJW-_A==";
-const char* influxDBOrg = "ae1e888a12c8e19c";
+const char* influxDBToken = "kjhasu786k3hrkjhlvdpq 9igfepqèdqùàviupwoqhhohpvchiusiasss9qwhj=";
+const char* influxDBOrg = "dfsjkhdfsk876s6fds786sdf";
 const char* influxDBBucket = "Victron";
 */
 
